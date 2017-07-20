@@ -1,34 +1,19 @@
 const express = require('express');
-const path = require('path');
-const generatePassword = require('password-generator');
-
+const http = require('http');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const app = express();
+const router = require('./router');
+const cors = require('cors');
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+// App Setup
+app.use(morgan('combined'));
+app.use(cors());
+app.use(bodyParser.json({ type: '*/json' }))
+router(app);
 
-// Put all API endpoints under '/api'
-app.get('/api/passwords', (req, res) => {
-  const count = 5;
-
-  // Generate some passwords
-  const passwords = Array.from(Array(count).keys()).map(i =>
-    generatePassword(12, false)
-  )
-
-  // Return them as json
-  res.json(passwords);
-
-  console.log(`Sent ${count} passwords`);
-});
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
+// Server Setup
 const port = process.env.PORT || 7700;
-app.listen(port);
-
-console.log(`Password generator listening on ${port}`);
+const server = http.createServer(app);
+server.listen(port);
+console.log('Server listening on:', port);

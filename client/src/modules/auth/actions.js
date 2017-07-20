@@ -30,7 +30,7 @@ export function loginUser({ username, password }) {
 
 export function signupUser({username, email, password }) {
     return function(dispatch) {
-        axios.post(`${ROOT_URL}/signup`, { username, email, password })
+        axios.post(`${ROOT_URL}/users`, { username, email, password })
             .then(response => {
                 // If request is good..
                 // - Update the state to indicate user is authenticated
