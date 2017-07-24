@@ -21,9 +21,8 @@ exports.signup = function(req, res, next) {
     return res.status(422).send({ error: 'You must provide username, email and password'});
   }
 
-  //TODO: add a check for duplicate username
-  // See if a user with the given email exists
-  User.findOne({ username }, function(err, existingUser) {
+  // See if a user with the given username or email exists
+  User.findByUsername({ username }, function(err, existingUser) {
     if (err) { return next(err); }
 
     // if a user with email does exist, return an Error
@@ -31,23 +30,33 @@ exports.signup = function(req, res, next) {
       return res.status(422).send({ error: "Username is in use"});
     }
 
-    // if a user with email does NOT exist, create and save record
-    const user = new User({
-      username: username,
-      email: email,
-      password: password
-    });
+    User.findByEmail({ email }, function(err, existingUser) {
+      if (err) { return next(err); }
 
-    user.save(function(err) {
-      if (err) {
-        return next(err);
+      // if a user with email does exist, return an Error
+      if (existingUser) {
+        return res.status(422).send({ error: "Email is in use"});
       }
+      // if a user with email does NOT exist, create and save record
+      const user = new User({
+        username: username,
+        email: email,
+        password: password
+      });
 
-      // Respond to request indicating the user was created
-      console.log(user);
-      res.json({ token: tokenForUser(user) });
+      user.save(function(err) {
+        if (err) {
+          return next(err);
+        }
+
+        // Respond to request indicating the user was created
+        console.log(user);
+        res.json({ token: tokenForUser(user) });
+
+      });
 
     });
+
 
   });
 
