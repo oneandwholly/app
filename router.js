@@ -1,10 +1,10 @@
 const Authentication = require('./controllers/authentication');
+const PhotosController = require('./controllers/photos');
 const passportService = require('./services/passport');
 const passport = require('passport');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 const requireLogin = passport.authenticate('local', { session: false });
-
 
 module.exports = function(app) {
   app.get('/', requireAuth, function(req, res) {
@@ -12,4 +12,5 @@ module.exports = function(app) {
   });
   app.post('/users', Authentication.signup);
   app.post('/login', requireLogin, Authentication.login);
+  app.post('/photos', requireAuth, PhotosController.upload);
 };

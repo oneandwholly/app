@@ -7,9 +7,14 @@
 // );
 
 const bcrypt = require('bcrypt-nodejs');
-const db = require('../db');
+var mysql = require('mysql');
 
-const connection = db.connection;
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '9200',
+  database : 'my_db'
+});
 
 connection.connect();
 
@@ -103,7 +108,12 @@ User.findById = function(id, cb) {
     }
     if (results.length) {
       const retrievedUser = results[0];
-      const user = new User({id: retrievedUser.id, email: retrievedUser.email, password: retrievedUser.password });
+      const user = new User({
+        id: retrievedUser.id,
+        username: retrievedUser.username,
+        email: retrievedUser.email,
+        password: retrievedUser.password
+      });
       cb(undefined, user);
       return;
     }

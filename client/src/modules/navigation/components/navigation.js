@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signoutUser } from '../../auth';
+import { Link } from 'react-router-dom';
 
 class Navigation extends Component {
 
@@ -20,7 +21,7 @@ class Navigation extends Component {
         <a>explore</a>
         <a>activities</a>
         <a>profile</a>
-        <a>create*</a>
+        <Link to='/create'>create*</Link>
         <a onClick={this.handleSignOut.bind(this)}>logout*</a>
         </ul>
         </div>
