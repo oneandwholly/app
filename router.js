@@ -11,6 +11,9 @@ module.exports = function(app) {
     res.send({ message: 'super secret code is abc1234' });
   });
   app.post('/users', Authentication.signup);
+  app.get('/users/:username/id', Authentication.fetchIdByUsername);
+  app.get('/users/id', requireAuth, Authentication.fetchUsernameByToken);
+  app.get('/users/:id/photos', PhotosController.fetchByUserId)
   app.post('/login', requireLogin, Authentication.login);
   app.post('/photos', requireAuth, PhotosController.upload);
 };

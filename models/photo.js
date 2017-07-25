@@ -36,8 +36,8 @@ class Photo {
   }
 }
 
-Photo.findByUserId = function(id, cb) {
-  connection.query(`SELECT * FROM photos WHERE user_id='${id}' ORDER BY created_at DESC`, function(err, results) {
+Photo.findByUserId = function({ uid }, cb) {
+  connection.query(`SELECT * FROM photos WHERE user_id='${uid}' ORDER BY created_at DESC`, function(err, results) {
     if (err) {
       cb(err);
       return;

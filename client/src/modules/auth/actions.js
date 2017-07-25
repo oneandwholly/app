@@ -4,6 +4,7 @@ import {
     AUTH_USER,
     UNAUTH_USER,
     AUTH_ERROR,
+    SET_USERNAME
 } from './actionTypes';
 
 const ROOT_URL = "http://localhost:7700";
@@ -19,6 +20,18 @@ export function loginUser({ username, password }) {
               dispatch({ type: AUTH_USER })
               // - Save the JWT token
               localStorage.setItem('token', response.data.token);
+
+              const config = {
+                headers: { authorization: localStorage.getItem('token')}
+              };
+              console.log('config', config)
+              return axios.get(`${ROOT_URL}/users/id`, config)
+              .then(res => {
+                dispatch({
+                  type: SET_USERNAME,
+                  payload: res.data.username
+                });
+              });
           })
           .catch(() => {
               // If request is bad..
@@ -56,4 +69,20 @@ export function signoutUser() {
     localStorage.removeItem('token');
 
     return { type: UNAUTH_USER };
+}
+
+export function setUsername() {
+  return function(dispatch) {
+    const config = {
+      headers: { authorization: localStorage.getItem('token')}
+    };
+    console.log('config', config)
+    axios.get(`${ROOT_URL}/users/id`, config)
+    .then(res => {
+      dispatch({
+        type: SET_USERNAME,
+        payload: res.data.username
+      });
+    })
+  }
 }

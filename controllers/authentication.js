@@ -61,3 +61,19 @@ exports.signup = function(req, res, next) {
   });
 
 };
+
+exports.fetchUsernameByToken = function(req, res, next) {
+    res.send({ username: req.user.username });
+}
+
+exports.fetchIdByUsername = function(req, res, next) {
+    User.findByUsername({ username: req.params.username }, function(err, user) {
+      if (err) { return next(err); }
+
+      // if a user with email does exist, return an Error
+      if (user) {
+        return res.send({ id: user.id });
+      }
+    });
+
+}

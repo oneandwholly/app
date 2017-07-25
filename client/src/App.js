@@ -4,6 +4,7 @@ import './App.css';
 import { Auth } from './modules/auth';
 import { Navigation } from './modules/navigation';
 import { Create } from './modules/create';
+import { Profile } from './modules/profile';
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
           <Navigation />
           <Route path='/' exact component={Auth} />
           <Route path='/create' exact component={Create} />
+          <Route path='/:username' component={Profile} />
         </div>
       </Router>
     );

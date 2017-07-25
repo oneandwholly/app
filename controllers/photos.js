@@ -1,5 +1,6 @@
 const aws = require('../services/aws');
 const Photo = require('../models/photo');
+const User = require('../models/user');
 
 exports.upload = function(req, res, next) {
   console.log('im in upload in PhotosController')
@@ -25,19 +26,20 @@ exports.upload = function(req, res, next) {
   });
 }
 
-exports.fetchAll = function(req, res, next) {
-  Photo.findByUserId(req.user.id, function(err, photos) {
-    if (err) { return next(err); }
-    if (photos) {
-      const resp = JSON.stringify(photos);
+exports.fetchByUserId = function(req, res, next) {
 
-      res.writeHead(200, {
-        'Content-Length': resp.length,
-        'Content-Type': 'application/json; charset=utf-8'
+      Photo.findByUserId({ uid: req.params.id }, function(err, photos) {
+        if (err) { return next(err); }
+        if (photos) {
+          const resp = JSON.stringify(photos);
+          res.writeHead(200, {
+            'Content-Length': resp.length,
+            'Content-Type': 'application/json; charset=utf-8'
+          });
+          res.end(resp);
+        } else {
+          next();
+        }
       });
-      res.end(resp);
-    } else {
-      next();
-    }
-  })
+
 }

@@ -69,6 +69,7 @@ class User {
 
 // See if a user with the username or email exists
 User.findByUsername = function({ username }, cb) {
+  console.log('username', username)
   connection.query(`SELECT * FROM users WHERE username='${username}'`, function(err, results) {
     if (err) {
       cb(err);
