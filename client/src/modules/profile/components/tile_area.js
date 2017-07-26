@@ -6,7 +6,7 @@ class TileArea extends Component {
 
   render() {
     const tiles = this.props.order.map((index) => {
-      return <Tile key={index} photo={ this.props.photos[index] } />
+      return <Tile key={index} photo={this.props.photos[index]} history={this.props.history} />
     });
 
     return <div>{tiles}</div>

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { SAVE_PHOTOS } from './actionTypes';
+import { SAVE_PROFILE_PHOTOS } from './actionTypes';
+import { PREVENT_FETCHING_PHOTOS } from './actionTypes';
 
 const ROOT_URL = "http://localhost:7700";
 
@@ -16,7 +17,7 @@ export function fetchPhotos(username, history) {
       })
       .then(res => {
         dispatch({
-          type: SAVE_PHOTOS,
+          type: SAVE_PROFILE_PHOTOS,
           payload: res.data
         });
         if(history) {
@@ -24,14 +25,13 @@ export function fetchPhotos(username, history) {
         }
       })
 
-    // axios.get(`${ROOT_URL}/${username}/photos`, config)
-    //   .then(res => {
-    //     console.log(res.data);
-    //     dispatch({
-    //       type:  ,
-    //       payload: res.data
-    //     });
-    //   });
+  }
+}
 
+export function preventFetchingAgain() {
+  return function(dispatch) {
+    dispatch({
+      type: PREVENT_FETCHING_PHOTOS
+    })
   }
 }

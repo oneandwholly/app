@@ -45,3 +45,23 @@ exports.fetchByUserId = function(req, res, next) {
       });
 
 }
+
+exports.fetchByPhotoId = function(req, res, next) {
+
+  Photo.findByPhotoId({ photo_id: req.params.id }, function(err, photo) {
+    if (err) { return next(err); }
+    if (photo) {
+      console.log('photos', photo)
+      const resp = JSON.stringify(photo);
+      res.writeHead(200, {
+        'Content-Length': resp.length,
+        'Content-Type': 'application/json; charset=utf-8'
+      });
+      res.end(resp);
+    } else {
+      const resp = JSON.stringify([]);
+      res.end(resp)
+    }
+  });
+
+}

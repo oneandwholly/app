@@ -9,21 +9,29 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchPhotos(this.props.match.params.username);
+    //if didnt come from clicking topNavBar's profile button
+    if(this.props.shouldFetchPhotos) {
+      this.props.fetchPhotos(this.props.match.params.username);
+    }
   }
 
   componentWillReceiveProps(newProps) {
-    this.props.fetchPhotos(newProps.match.params.username);
+    if(this.props.shouldFetchPhotos) {
+      this.props.fetchPhotos(newProps.match.params.username);
+    }
   }
 
   render() {
-    console.log('props', this.props)
     return (
       <div>
-        <TileArea></TileArea>
+        <TileArea history={this.props.history}></TileArea>
       </div>
     );
   }
 }
 
-export default connect(null, actions)(Profile);
+function mapStateToProps({ profile }) {
+  return { shouldFetchPhotos: profile.shouldFetchPhotos };
+}
+
+export default connect(mapStateToProps, actions)(Profile);

@@ -16,4 +16,5 @@ module.exports = function(app) {
   app.get('/users/:id/photos', PhotosController.fetchByUserId)
   app.post('/login', requireLogin, Authentication.login);
   app.post('/photos', requireAuth, PhotosController.upload);
+  app.get('/photos/:id', PhotosController.fetchByPhotoId);
 };

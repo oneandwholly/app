@@ -1,19 +1,22 @@
 import {
-  SAVE_PHOTOS
+  SAVE_PROFILE_PHOTOS,
+  PREVENT_FETCHING_PHOTOS
 } from './actionTypes';
 
-export default (state = { photos: {}, order: [] }, action) => {
+export default (state = { photos: {}, order: [], shouldFetchPhotos: true }, action) => {
   switch(action.type) {
-    case SAVE_PHOTOS:
+    case SAVE_PROFILE_PHOTOS:
       let newPhotos = {};
       let newOrder = [];
-      let newState = { photos: { ...state.photos }, order: [] }
+      let newState = { ...state , order: [] }
       action.payload.forEach((photo) => {
         newState.order.push(photo.id);
         newState.photos[photo.id] = photo;
       });
       console.log('newState', newState);
       return newState;
+    case PREVENT_FETCHING_PHOTOS:
+      return { ...state, shouldFetchPhotos: false }
     default:
       return state;
     }

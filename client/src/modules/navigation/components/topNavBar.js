@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { signoutUser, setUsername } from '../../auth';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { fetchPhotos } from '../../profile';
+import { fetchPhotos, preventFetchingAgain } from '../../profile';
 
 class TopNavBar extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class TopNavBar extends Component {
   handleProfileCick(e) {
     e.preventDefault();
     this.props.fetchPhotos(this.props.username, this.props.history);
+    this.props.preventFetchingAgain();
   }
 
   render() {
@@ -44,4 +45,4 @@ function mapStateToProps({ auth }) {
   return { username: auth.username };
 }
 
-export default connect(mapStateToProps, { signoutUser, setUsername, fetchPhotos })(TopNavBar);
+export default connect(mapStateToProps, { signoutUser, setUsername, fetchPhotos, preventFetchingAgain })(TopNavBar);

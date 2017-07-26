@@ -51,4 +51,19 @@ Photo.findByUserId = function({ uid }, cb) {
 
 }
 
+Photo.findByPhotoId = function({ photo_id }, cb) {
+  connection.query(`SELECT * FROM photos WHERE id='${photo_id}'`, function(err, results) {
+    if (err) {
+      cb(err);
+      return;
+    }
+    if (results.length) {
+      cb(null, results);
+      return;
+    }
+    cb(null, false);
+  });
+
+}
+
 module.exports = Photo;
