@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Auth, RequireAuth } from './modules/auth';
 import { Navigation } from './modules/navigation';
@@ -11,10 +11,12 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navigation />
-          <Route path='/' exact component={Auth} />
-          <Route path='/create' exact component={Create} />
-          <Route path='/:username' component={RequireAuth(Profile)} />
+          <Route path='/' component={Navigation} />
+          <Switch>
+            <Route path='/' exact component={Auth} />
+            <Route path='/create' exact component={Create} />
+            <Route path='/:username' component={RequireAuth(Profile)} />
+          </Switch>
         </div>
       </Router>
     );

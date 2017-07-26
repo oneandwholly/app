@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { SAVE_PHOTOS } from './actionTypes';
 
 const ROOT_URL = "http://localhost:7700";
 
-export function fetchPhotos(username) {
+export function fetchPhotos(username, history) {
   return function(dispatch) {
     const config = {
       headers: { authorization: localStorage.getItem('token')}
@@ -14,7 +15,13 @@ export function fetchPhotos(username) {
         return axios.get(`${ROOT_URL}/users/${id}/photos`);
       })
       .then(res => {
-        console.log(res);
+        dispatch({
+          type: SAVE_PHOTOS,
+          payload: res.data
+        });
+        if(history) {
+          history.push(`/${username}`);
+        }
       })
 
     // axios.get(`${ROOT_URL}/${username}/photos`, config)

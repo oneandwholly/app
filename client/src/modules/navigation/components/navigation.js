@@ -6,7 +6,7 @@ class Navigation extends Component {
 
   render() {
     if (this.props.auth.authenticated) {
-      return <TopNavBar />
+      return <TopNavBar history={this.props.history} />
     } else {
       return <div></div>;
     }

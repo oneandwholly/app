@@ -31,6 +31,7 @@ exports.fetchByUserId = function(req, res, next) {
       Photo.findByUserId({ uid: req.params.id }, function(err, photos) {
         if (err) { return next(err); }
         if (photos) {
+          console.log('photos', photos)
           const resp = JSON.stringify(photos);
           res.writeHead(200, {
             'Content-Length': resp.length,
@@ -38,7 +39,8 @@ exports.fetchByUserId = function(req, res, next) {
           });
           res.end(resp);
         } else {
-          next();
+          const resp = JSON.stringify([]);
+          res.end(resp)
         }
       });
 
