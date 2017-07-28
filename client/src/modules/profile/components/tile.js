@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { fetchPhoto } from '../../card';
 import { connect } from 'react-redux';
 //<div>like:{photo.likes} comments:{photo.comments}</div>
+// /  <Link to={`/p/${photo.id}`}><img src={photo.img_url} /></Link>
 
 class Tile extends Component {
   handleTileClick(e) {

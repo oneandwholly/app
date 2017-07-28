@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SAVE_CARD_PHOTO, SAVE_CARD_COMMENTS } from './actionTypes';
+import { SAVE_CARD_PHOTO, SAVE_CARD_COMMENTS, CLEAR_CARD_DATA, ADD_COMMENT } from './actionTypes';
 
 const ROOT_URL = "http://localhost:7700";
 
@@ -34,18 +34,43 @@ export function addComment({comment_text, photo_id}) {
         comment_text,
         photo_id
       };
-      axios.post('http://localhost:3090/comments/', body, config)
-      .then((response) => {
-        axios.get(`${ROOT_URL}/photos/${photo_id}/comments`, {
+      axios.post(`${ROOT_URL}/comments`, body, config)
+      .then((res) => {
+        console.log(res)
+        axios.get(`${ROOT_URL}/comments/${res.data[0].cid}`, {
             headers: { authorization: localStorage.getItem('token') }
         })
-            .then((response) => {
-              console.log(response);
+            .then((res) => {
                   dispatch({
-                      type: SAVE_CARD_COMMENTS,
-                      payload: {data: response.data, photo_id}
+                      type: ADD_COMMENT,
+                      payload: res.data[0]
                   })
             });
       })
+  }
+}
+
+export function fetchCommentsByPhotoId({photo_id}) {
+  return function(dispatch) {
+    const config = {
+      headers: { authorization: localStorage.getItem('token')}
+    };
+
+    axios.get(`${ROOT_URL}/photos/${photo_id}/comments`)
+      .then(res => {
+        console.log('commennts', res.data);
+        dispatch({
+            type: SAVE_CARD_COMMENTS,
+            payload: res.data
+        })
+      });
+  }
+}
+
+export function clearCardData() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_CARD_DATA
+    });
   }
 }

@@ -1,5 +1,6 @@
 const Authentication = require('./controllers/authentication');
 const PhotosController = require('./controllers/photos');
+const CommentsController = require('./controllers/comments');
 const passportService = require('./services/passport');
 const passport = require('passport');
 
@@ -16,5 +17,8 @@ module.exports = function(app) {
   app.get('/users/:id/photos', PhotosController.fetchByUserId)
   app.post('/login', requireLogin, Authentication.login);
   app.post('/photos', requireAuth, PhotosController.upload);
+  app.get('/photos/:id/comments', CommentsController.fetchByPhotoId);
   app.get('/photos/:id', PhotosController.fetchByPhotoId);
+  app.post('/comments', requireAuth, CommentsController.add);
+  app.get('/comments/:id', CommentsController.fetchByCommentId);
 };

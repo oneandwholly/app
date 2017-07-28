@@ -10,12 +10,16 @@ class Profile extends Component {
 
   componentWillMount() {
     //if didnt come from clicking topNavBar's profile button
+    console.log('inside componentWillMount in Profile component')
     if(this.props.shouldFetchPhotos) {
       this.props.fetchPhotos(this.props.match.params.username);
+      this.props.preventFetchingAgain();
     }
   }
 
   componentWillReceiveProps(newProps) {
+    console.log('inside Update in Profile component', 'this.props.shouldFetchPhotos', this.props.shouldFetchPhotos)
+
     if(this.props.shouldFetchPhotos) {
       this.props.fetchPhotos(newProps.match.params.username);
     }
